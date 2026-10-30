@@ -1,0 +1,7 @@
+psycopg[binary]
+google-genai
+python-dotenv
+streamlit
+pyodbc
+pydantic
+pandas
