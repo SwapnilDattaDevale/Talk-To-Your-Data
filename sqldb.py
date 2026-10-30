@@ -1,15 +1,27 @@
 import pyodbc
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from your .env file
+load_dotenv()
 
 def execute_query(query):
-    # Update connection parameters for SQL Server
+    # Fetch Azure credentials securely
+    server = os.getenv("DB_SERVER")
+    database = os.getenv("DB_DATABASE")
+    username = os.getenv("DB_USERNAME")
+    password = os.getenv("DB_PASSWORD")
+    
+    # Update connection parameters for Azure SQL Server
     connection_string = (
-        
         "DRIVER={ODBC Driver 17 for SQL Server};"
-        "SERVER=DESKTOP-QATNOPD\SQLEXPRESS;"
-        "DATABASE=namastesql;"
-        "Trusted_Connection=yes;"  # Use Windows Authentication
-        "Encrypt=no;"
-        "TrustServerCertificate=yes;"
+        f"SERVER={server};"
+        f"DATABASE={database};"
+        f"UID={username};"
+        f"PWD={password};"
+        "Encrypt=yes;"
+        "TrustServerCertificate=no;"
+        "Connection Timeout=30;"
     )
     
     # pyodbc contexts handle closing connection/cursor automatically
