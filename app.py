@@ -1,6 +1,7 @@
 import json
 import streamlit as st
 import pandas as pd
+import os  # <-- This is the missing line
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
