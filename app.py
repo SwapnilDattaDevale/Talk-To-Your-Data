@@ -10,6 +10,34 @@ from sqldb import execute_query, get_schema
 # Load environment variables
 load_dotenv()
 
+# Fetch login credentials from .env or Streamlit Secrets
+EXPECTED_USER = os.getenv("APP_USERNAME")
+EXPECTED_PASS = os.getenv("APP_PASSWORD")
+
+# Initialize session state to track if the user is logged in
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+# Display the Login Window if not authenticated
+if not st.session_state.authenticated:
+    st.title("🔒 Login Required")
+    
+    # Create the login form
+    with st.form("login_form"):
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submitted = st.form_submit_button("Login")
+        
+        if submitted:
+            if username == EXPECTED_USER and password == EXPECTED_PASS:
+                st.session_state.authenticated = True
+                st.rerun() # Refresh the page to hide the login and show the app
+            else:
+                st.error("Invalid username or password.")
+                
+    # st.stop() prevents the rest of your code from running until authenticated
+    st.stop()
+
 # Initialize Gemini Client
 @st.cache_resource
 def get_client():
